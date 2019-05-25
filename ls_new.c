@@ -47,9 +47,9 @@ int main(int argc, char* argv[]){
     printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
           (long long) ls.mode,
           (long) ls.nlink,
-          (long) ls.st_uid,
-          (long) ls.st_gid,
-          (long long) ls.ls.size,
+          (long) ls.uid,
+          (long) ls.gid,
+          (long long) ls.size,
           ctime(&ls.mtime),
           ls.name);
   }
