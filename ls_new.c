@@ -12,7 +12,7 @@ struct ls_st {
   uid_t           uid;
   gid_t           gid;
   off_t           size;
-  struct timespec mtime;
+  time_t          mtime;
   char            name[250];
 };
 
@@ -43,6 +43,6 @@ int main(int argc, char* argv[]){
     ls.gid = sb.st_gid;
     ls.size = sb.st_size;
     ls.mtime = sb.st_mtime;
-    strcpy(ls.name, dir.d_name);
+    strcpy(ls.name, dir -> d_name);
   }
 }
