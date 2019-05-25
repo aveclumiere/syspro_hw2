@@ -44,5 +44,13 @@ int main(int argc, char* argv[]){
     ls.size = sb.st_size;
     ls.mtime = sb.st_mtime;
     strcpy(ls.name, dir -> d_name);
+    printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
+          (long long) ls.mode,
+          (long) ls.nlink,
+          (long) ls.st_uid,
+          (long) ls.st_gid,
+          (long long) ls.ls.size,
+          ctime(&ls.mtime),
+          ls.name);
   }
 }
