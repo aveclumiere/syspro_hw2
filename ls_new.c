@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
     //       ctime(&ls.mtime),
     //       ls.name);
   }
-  qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpls);
+  qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
   for(int i = 0; i < LS_INDEX; i++){
     printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
           (long long) LS_LIST[i].mode,
@@ -74,12 +74,14 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-int cmpls(struct ls_st a, struct ls_st b){
-  return cmpstr(a.name, b.name);
-}
+// int cmpls(struct ls_st a, struct ls_st b){
+//   return cmpstr(a.name, b.name);
+// }
 
 int cmpstr(const void* a, const void* b){
-  const char* aa = *(const char**)a;
-  const char* bb = *(const char**)b;
-  return strcmp(aa, bb);
+  const struct ls_st *ls_a = a;
+  const struct ls_st *ls_b = b;
+  // const char **ia = (const char **)a;
+  // const char **ib = (const char **)b;
+  return strcmp(ls_a -> name, ls_b -> name);
 }
