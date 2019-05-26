@@ -46,7 +46,7 @@ int main(int argc, char* argv[]){
     ls.size = sb.st_size;
     ls.mtime = sb.st_mtime;
     strcpy(ls.name, dir -> d_name);
-    LS_LIST[LS_INDEX] = ls_st;
+    LS_LIST[LS_INDEX] = ls;
     LS_INDEX++;
     // printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
     //       (long long) ls.mode,
