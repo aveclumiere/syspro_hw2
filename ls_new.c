@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
     //       ctime(&ls.mtime),
     //       ls.name);
   }
-  qsort(LS_LIST, LS_INDEX, sizeof(ls_st), cmpls);
+  qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpls);
   for(int i = 0; i < LS_INDEX; i++){
     printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
           (long long) LS_LIST[i].mode,
