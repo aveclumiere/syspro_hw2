@@ -19,7 +19,7 @@ struct ls_st {
 struct ls_st LS_LIST[2000];
 int LS_INDEX = 0;
 
-int cmpstr(const void* a, const void* b);
+int cmpstr(struct ls_st a, struct ls_st b);
 
 int main(int argc, char* argv[]){
   DIR* dp;
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]){
     //       ctime(&ls.mtime),
     //       ls.name);
   }
-  qsort(LS_LIST, LS_INDEX, sizeof(ls_st), cmpstr)
+  qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
   for(int i = 0; i < LS_INDEX; i++){
     printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
           (long long) LS_LIST[i].mode,
