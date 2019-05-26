@@ -1,6 +1,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <pwd.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +28,9 @@ int main(int argc, char* argv[]){
   char* path = ".";
   struct dirent* dir;
   struct stat sb;
+
+  struct group* grp;
+  struct passwd* pwd;
 
   if((dp = opendir(path)) == NULL){
       perror("Can't open directory");
@@ -63,11 +67,13 @@ int main(int argc, char* argv[]){
   qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
   for(int i = 0; i < LS_INDEX; i++){
     if (LS_LIST[i].name[0] == '.'){ continue; }
-    printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
+    grp = getgrgid(LS_LIST[i].gid);
+    pwd = getpwuid(LS_LIST[i].uid);
+    printf("%lld\t%ld\t%s\t%s\t%lld\t%s %s\n",
           (long long) LS_LIST[i].mode,
           (long) LS_LIST[i].nlink,
-          (long) LS_LIST[i].uid,
-          (long) LS_LIST[i].gid,
+          pwd -> pw_name,
+          grp -> gr_name,
           (long long) LS_LIST[i].size,
           ctime(&LS_LIST[i].mtime),
           LS_LIST[i].name);
