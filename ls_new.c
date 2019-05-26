@@ -16,6 +16,8 @@ struct ls_st {
   char            name[250];
 };
 
+struct ls_st LS_LIST[2000];
+int LS_INDEX = 0;
 
 int main(int argc, char* argv[]){
   DIR* dp;
@@ -44,13 +46,25 @@ int main(int argc, char* argv[]){
     ls.size = sb.st_size;
     ls.mtime = sb.st_mtime;
     strcpy(ls.name, dir -> d_name);
+    LS_LIST[LS_INDEX] = ls_st;
+    LS_INDEX++;
+    // printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
+    //       (long long) ls.mode,
+    //       (long) ls.nlink,
+    //       (long) ls.uid,
+    //       (long) ls.gid,
+    //       (long long) ls.size,
+    //       ctime(&ls.mtime),
+    //       ls.name);
+  }
+  for(int i = 0; i < LS_INDEX; i++){
     printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
-          (long long) ls.mode,
-          (long) ls.nlink,
-          (long) ls.uid,
-          (long) ls.gid,
-          (long long) ls.size,
-          ctime(&ls.mtime),
-          ls.name);
+          (long long) LS_LIST[i].mode,
+          (long) LS_LIST[i].nlink,
+          (long) LS_LIST[i].uid,
+          (long) LS_LIST[i].gid,
+          (long long) LS_LIST[i].size,
+          ctime(&LS_LIST[i].mtime),
+          LS_LIST[i].name);
   }
 }
