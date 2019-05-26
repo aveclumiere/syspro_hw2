@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <pwd.h>
+#include <grp.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
