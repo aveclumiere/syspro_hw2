@@ -62,6 +62,7 @@ int main(int argc, char* argv[]){
   }
   qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
   for(int i = 0; i < LS_INDEX; i++){
+    if (LS_LIST[i].name[0] == '.'){ continue; }
     printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
           (long long) LS_LIST[i].mode,
           (long) LS_LIST[i].nlink,
