@@ -22,6 +22,9 @@ struct ls_st {
 struct ls_st LS_LIST[2000];
 int LS_INDEX = 0;
 
+char DIR_LIST[2000][250];
+int DIR_INDEX = 0;
+
 int cmpstr(const void* a, const void* b);
 
 int main(int argc, char* argv[]){
@@ -67,6 +70,9 @@ int main(int argc, char* argv[]){
   printf("total %d\n", blk_cnt);
   for(int i = 0; i < LS_INDEX; i++){
     if (LS_LIST[i].name[0] == '.'){ continue; }
+    if (S_ISDIR(LS_LIST[i].mode)){
+      strcpy(DIR_LIST[DIR_INDEX++], LS_LIST[i].name);
+    }
     grp = getgrgid(LS_LIST[i].gid);
     pwd = getpwuid(LS_LIST[i].uid);
     char* t = ctime(&LS_LIST[i].mtime);
@@ -89,6 +95,9 @@ int main(int argc, char* argv[]){
           (long long) LS_LIST[i].size,
           t,
           LS_LIST[i].name);
+  }
+  for(int i = 0; i < DIR_INDEX; i++){
+    printf("%s\n", DIR_LIST[i]);
   }
   return 0;
 }
