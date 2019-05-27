@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 struct ls_st {
   mode_t          mode;
@@ -32,6 +33,8 @@ int main(int argc, char* argv[]){
   struct group* grp;
   struct passwd* pwd;
 
+  int blk_cnt = 0;
+
   if((dp = opendir(path)) == NULL){
       perror("Can't open directory");
       exit(1);
@@ -55,8 +58,10 @@ int main(int argc, char* argv[]){
     strcpy(ls.name, dir -> d_name);
     LS_LIST[LS_INDEX] = ls;
     LS_INDEX++;
+    blk_cnt += (ceil(ls.size / 4096) * 4)
   }
   qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
+  printf("total %d\n", blk_cnt);
   for(int i = 0; i < LS_INDEX; i++){
     if (LS_LIST[i].name[0] == '.'){ continue; }
     grp = getgrgid(LS_LIST[i].gid);
