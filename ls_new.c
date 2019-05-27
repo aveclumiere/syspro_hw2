@@ -95,7 +95,7 @@ void ls_recursive(char* path){
 
     struct tm* t = localtime(&ls_list[i].mtime);
     char m_time[100];
-    strftime(m_time, 100, "%b %d %H:%M", t)
+    strftime(m_time, 100, "%b %d %H:%M", t);
 
     printf((S_ISDIR(ls_list[i].mode)) ? "d" : "-");
     printf((ls_list[i].mode & S_IRUSR) ? "r" : "-");
