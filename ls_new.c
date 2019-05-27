@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
     LS_INDEX++;
     if (ls.name[0] != '.'){
       blk_cnt += (((int) ((double) ls.size / 4096.0) * 4);
-      if((int) ((double) ls.size % 4096.0) != 0){ blk_cnt += 4; }
+      if(((double) ls.size % 4096.0) != 0.0){ blk_cnt += 4; }
     }
   }
   qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
