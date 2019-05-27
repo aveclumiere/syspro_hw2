@@ -111,6 +111,7 @@ void ls_recursive(char* path){
       strcat(recursive_path, "/");
       strcat(recursive_path, dir_list[i]);
       printf("%s\n", recursive_path);
+      free(recursive_path);
       // ls_recursive
     }
   }
