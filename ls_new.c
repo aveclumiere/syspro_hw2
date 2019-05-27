@@ -59,7 +59,7 @@ int main(int argc, char* argv[]){
     LS_LIST[LS_INDEX] = ls;
     LS_INDEX++;
     if (ls.name[0] != '.'){
-      blk_cnt += (((int) ((double) ls.size / 4096.0) * 4);
+      blk_cnt += ((int) ((double) ls.size / 4096.0) * 4);
       if(((double) ls.size % 4096.0) != 0.0){ blk_cnt += 4; }
     }
   }
