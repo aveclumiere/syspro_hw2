@@ -80,6 +80,8 @@ void ls_recursive(char* path){
     free(f_name);
   }
   qsort(ls_list, ls_index, sizeof(struct ls_st), cmpstr);
+
+  printf("%s:\n", path);
   printf("total %d\n", blk_cnt);
   for(int i = 0; i < ls_index; i++){
     if (ls_list[i].name[0] == '.'){ continue; }
@@ -115,7 +117,6 @@ void ls_recursive(char* path){
       strcpy(recursive_path, path);
       strcat(recursive_path, "/");
       strcat(recursive_path, dir_list[i]);
-      printf("%s\n", recursive_path);
       ls_recursive(recursive_path);
       free(recursive_path);
     }
