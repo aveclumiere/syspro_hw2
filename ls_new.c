@@ -104,6 +104,16 @@ void ls_recursive(char* path){
           t,
           ls_list[i].name);
   }
+  if(ls_index != 0){
+    for(int i = 0; i < ls_index; i++){
+      char* recursive_path;
+      strcpy(recursive_path, path);
+      strcat(recursive_path, "/");
+      strcat(recursive_path, ls_list[i]);
+      printf("%s\n", recursive_path);
+      // ls_recursive
+    }
+  }
 }
 
 int cmpstr(const void* a, const void* b){
