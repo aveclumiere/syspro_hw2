@@ -75,7 +75,6 @@ int main(int argc, char* argv[]){
     printf((LS_LIST[i].mode & S_IXOTH) ? "x" : "-");
     printf("\t");
     printf("%ld\t%s\t%s\t%lld\t%s\t%s\n",
-          (long long) LS_LIST[i].mode,
           (long) LS_LIST[i].nlink,
           pwd -> pw_name,
           grp -> gr_name,
