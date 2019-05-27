@@ -31,7 +31,6 @@ int main(int argc, char* argv[]){
 
 void ls_recursive(char* path){
   DIR* dp;
-  // char* path = ".";
   struct dirent* dir;
   struct stat sb;
 
@@ -111,8 +110,8 @@ void ls_recursive(char* path){
       strcat(recursive_path, "/");
       strcat(recursive_path, dir_list[i]);
       printf("%s\n", recursive_path);
+      ls_recursive(recursive_path);
       free(recursive_path);
-      // ls_recursive
     }
   }
 }
