@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+
 
 struct ls_st {
   mode_t          mode;
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
     strcpy(ls.name, dir -> d_name);
     LS_LIST[LS_INDEX] = ls;
     LS_INDEX++;
-    if (ls.name[0] != '.'){ blk_cnt += ((int) (ceil((double) ls.size / 4096.0) * 4.0));}
+    if (ls.name[0] != '.'){ blk_cnt += (((int) ((double) ls.size / 4096.0) + 1) * 4));}
   }
   qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
   printf("total %d\n", blk_cnt);
