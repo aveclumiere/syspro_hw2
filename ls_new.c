@@ -20,7 +20,7 @@ struct ls_st {
 };
 
 
-
+void ls_recursive(char* path);
 int cmpstr(const void* a, const void* b);
 
 int main(int argc, char* argv[]){
