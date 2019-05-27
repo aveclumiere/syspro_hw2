@@ -22,7 +22,6 @@ struct ls_st LS_LIST[2000];
 int LS_INDEX = 0;
 
 int cmpstr(const void* a, const void* b);
-int cmpls(struct ls_st a, struct ls_st b);
 
 int main(int argc, char* argv[]){
   DIR* dp;
@@ -56,14 +55,6 @@ int main(int argc, char* argv[]){
     strcpy(ls.name, dir -> d_name);
     LS_LIST[LS_INDEX] = ls;
     LS_INDEX++;
-    // printf("%lld\t%ld\t%ld\t%ld\t%lld\t%s\t%s\n",
-    //       (long long) ls.mode,
-    //       (long) ls.nlink,
-    //       (long) ls.uid,
-    //       (long) ls.gid,
-    //       (long long) ls.size,
-    //       ctime(&ls.mtime),
-    //       ls.name);
   }
   qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
   for(int i = 0; i < LS_INDEX; i++){
@@ -72,7 +63,18 @@ int main(int argc, char* argv[]){
     pwd = getpwuid(LS_LIST[i].uid);
     char* t = ctime(&LS_LIST[i].mtime);
     if (t[strlen(t) - 1] == '\n') t[strlen(t) - 1] = '\0';
-    printf("%lld\t%ld\t%s\t%s\t%lld\t%s\t%s\n",
+    printf((S_ISDIR(LS_LIST[i].mode)) ? "d" : "-");
+    printf((LS_LIST[i].mode & S_IRUSR) ? "r" : "-");
+    printf((LS_LIST[i].mode & S_IWUSR) ? "w" : "-");
+    printf((LS_LIST[i].mode & S_IXUSR) ? "x" : "-");
+    printf((LS_LIST[i].mode & S_IRGRP) ? "r" : "-");
+    printf((LS_LIST[i].mode & S_IWGRP) ? "w" : "-");
+    printf((LS_LIST[i].mode & S_IXGRP) ? "x" : "-");
+    printf((LS_LIST[i].mode & S_IROTH) ? "r" : "-");
+    printf((LS_LIST[i].mode & S_IWOTH) ? "w" : "-");
+    printf((LS_LIST[i].mode & S_IXOTH) ? "x" : "-");
+    printf("\t");
+    printf("%ld\t%s\t%s\t%lld\t%s\t%s\n",
           (long long) LS_LIST[i].mode,
           (long) LS_LIST[i].nlink,
           pwd -> pw_name,
@@ -84,14 +86,9 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-// int cmpls(struct ls_st a, struct ls_st b){
-//   return cmpstr(a.name, b.name);
-// }
 
 int cmpstr(const void* a, const void* b){
   const struct ls_st *ls_a = a;
   const struct ls_st *ls_b = b;
-  // const char **ia = (const char **)a;
-  // const char **ib = (const char **)b;
   return strcmp(ls_a -> name, ls_b -> name);
 }
