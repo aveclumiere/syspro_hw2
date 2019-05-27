@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
     strcpy(ls.name, dir -> d_name);
     LS_LIST[LS_INDEX] = ls;
     LS_INDEX++;
-    blk_cnt += (ceil(ls.size / 4096) * 4);
+    if (LS_LIST[i].name[0] != '.'){ blk_cnt += ((int) (ceil((double) ls.size / 4096.0) * 4.0));}
   }
   qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
   printf("total %d\n", blk_cnt);
