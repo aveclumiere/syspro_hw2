@@ -93,10 +93,9 @@ void ls_recursive(char* path){
     grp = getgrgid(ls_list[i].gid);
     pwd = getpwuid(ls_list[i].uid);
 
-    char* t = ctime(&ls_list[i].mtime);
+    struct tm* t = localtime(&ls_list[i].mtime);
     char m_time[100];
-    strftime(m_time, 100, "%b $d %H:%M", t)
-    // if (t[strlen(t) - 1] == '\n') t[strlen(t) - 1] = '\0';
+    strftime(m_time, 100, "%b %d %H:%M", t)
 
     printf((S_ISDIR(ls_list[i].mode)) ? "d" : "-");
     printf((ls_list[i].mode & S_IRUSR) ? "r" : "-");
