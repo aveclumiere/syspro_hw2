@@ -106,9 +106,9 @@ void ls_recursive(char* path){
     printf((ls_list[i].mode & S_IROTH) ? "r" : "-");
     printf((ls_list[i].mode & S_IWOTH) ? "w" : "-");
     printf((ls_list[i].mode & S_IXOTH) ? "x" : "-");
-    printf("\t");
+    printf(" ");
 
-    printf("%ld\t%s\t%s\t%lld\t%s\t%s\n",
+    printf("%ld\t%s\t%s\t%lld\t%s %s\n",
           (long) ls_list[i].nlink,
           pwd -> pw_name,
           grp -> gr_name,
