@@ -51,9 +51,14 @@ void ls_recursive(char* path){
   }
 
   while((dir = readdir(dp)) != NULL){
+    char* f_name = malloc(strlen(dir -> d_name) + strlen(path) + 2);
+    strcpy(f_name, path);
+    strcat(f_name, "/");
+    strcat(f_name, dir -> d_name);
+
     if(dir -> d_ino == 0){ continue; }
 
-    if(lstat(dir -> d_name, &sb) == -1){
+    if(lstat(f_name, &sb) == -1){
       perror("lstat");
       exit(-1);
     }
@@ -72,6 +77,7 @@ void ls_recursive(char* path){
       blk_cnt += ((int) ((double) ls.size / 4096.0) * 4);
       if(((int) ls.size % 4096) != 0){ blk_cnt += 4; }
     }
+    free(f_name);
   }
   qsort(ls_list, ls_index, sizeof(struct ls_st), cmpstr);
   printf("total %d\n", blk_cnt);
