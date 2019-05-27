@@ -94,7 +94,9 @@ void ls_recursive(char* path){
     pwd = getpwuid(ls_list[i].uid);
 
     char* t = ctime(&ls_list[i].mtime);
-    if (t[strlen(t) - 1] == '\n') t[strlen(t) - 1] = '\0';
+    char m_time[100];
+    strftime(m_time, 100, "%b $d %H:%M", t)
+    // if (t[strlen(t) - 1] == '\n') t[strlen(t) - 1] = '\0';
 
     printf((S_ISDIR(ls_list[i].mode)) ? "d" : "-");
     printf((ls_list[i].mode & S_IRUSR) ? "r" : "-");
@@ -113,7 +115,7 @@ void ls_recursive(char* path){
           pwd -> pw_name,
           grp -> gr_name,
           (long long) ls_list[i].size,
-          t,
+          m_time,
           ls_list[i].name);
   }
   printf("\n");
