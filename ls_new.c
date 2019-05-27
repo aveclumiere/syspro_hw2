@@ -70,13 +70,15 @@ int main(int argc, char* argv[]){
     if (LS_LIST[i].name[0] == '.'){ continue; }
     grp = getgrgid(LS_LIST[i].gid);
     pwd = getpwuid(LS_LIST[i].uid);
-    printf("%lld\t%ld\t%s\t%s\t%lld\t%s %s\n",
+    char* t = ctime(&LS_LIST[i].mtime);
+    if (t[strlen(t) - 1] == '\n') t[strlen(t) - 1] = '\0';
+    printf("%lld\t%ld\t%s\t%s\t%lld\t%s\t%s\n",
           (long long) LS_LIST[i].mode,
           (long) LS_LIST[i].nlink,
           pwd -> pw_name,
           grp -> gr_name,
           (long long) LS_LIST[i].size,
-          ctime(&LS_LIST[i].mtime),
+          t,
           LS_LIST[i].name);
   }
   return 0;
