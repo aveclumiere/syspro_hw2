@@ -62,6 +62,7 @@ void ls_recursive(char* path){
       perror("lstat");
       exit(-1);
     }
+    free(f_name);
 
     struct ls_st ls;
     ls.mode = sb.st_mode;
@@ -73,25 +74,28 @@ void ls_recursive(char* path){
     strcpy(ls.name, dir -> d_name);
     ls_list[ls_index] = ls;
     ls_index++;
+
     if (ls.name[0] != '.'){
       blk_cnt += ((int) ((double) ls.size / 4096.0) * 4);
       if(((int) ls.size % 4096) != 0){ blk_cnt += 4; }
     }
-    free(f_name);
   }
+
   qsort(ls_list, ls_index, sizeof(struct ls_st), cmpstr);
 
   printf("%s:\n", path);
   printf("total %d\n", blk_cnt);
-  for(int i = 0; i < ls_index; i++){
+  int i;
+  for(i = 0; i < ls_index; i++){
     if (ls_list[i].name[0] == '.'){ continue; }
-    if (S_ISDIR(ls_list[i].mode)){
-      strcpy(dir_list[dir_index++], ls_list[i].name);
-    }
+    if (S_ISDIR(ls_list[i].mode)){ strcpy(dir_list[dir_index++], ls_list[i].name); }
+
     grp = getgrgid(ls_list[i].gid);
     pwd = getpwuid(ls_list[i].uid);
+
     char* t = ctime(&ls_list[i].mtime);
     if (t[strlen(t) - 1] == '\n') t[strlen(t) - 1] = '\0';
+
     printf((S_ISDIR(ls_list[i].mode)) ? "d" : "-");
     printf((ls_list[i].mode & S_IRUSR) ? "r" : "-");
     printf((ls_list[i].mode & S_IWUSR) ? "w" : "-");
@@ -103,6 +107,7 @@ void ls_recursive(char* path){
     printf((ls_list[i].mode & S_IWOTH) ? "w" : "-");
     printf((ls_list[i].mode & S_IXOTH) ? "x" : "-");
     printf("\t");
+
     printf("%ld\t%s\t%s\t%lld\t%s\t%s\n",
           (long) ls_list[i].nlink,
           pwd -> pw_name,
@@ -111,8 +116,11 @@ void ls_recursive(char* path){
           t,
           ls_list[i].name);
   }
+  printf("\n");
+
   if(dir_index != 0){
-    for(int i = 0; i < dir_index; i++){
+    int i;
+    for(i = 0; i < dir_index; i++){
       char* recursive_path = malloc(strlen(path) + strlen(dir_list[i]) + 2);
       strcpy(recursive_path, path);
       strcat(recursive_path, "/");
