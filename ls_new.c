@@ -19,22 +19,30 @@ struct ls_st {
   char            name[250];
 };
 
-struct ls_st LS_LIST[2000];
-int LS_INDEX = 0;
 
-char DIR_LIST[2000][250];
-int DIR_INDEX = 0;
 
 int cmpstr(const void* a, const void* b);
 
 int main(int argc, char* argv[]){
+  char* initial_path = ".";
+  ls_recursive(initial_path);
+  return 0;
+}
+
+void ls_recursive(char* path){
   DIR* dp;
-  char* path = ".";
+  // char* path = ".";
   struct dirent* dir;
   struct stat sb;
 
   struct group* grp;
   struct passwd* pwd;
+
+  struct ls_st ls_list[2000];
+  int ls_index = 0;
+
+  char dir_list[2000][250];
+  int dir_index = 0;
 
   int blk_cnt = 0;
 
@@ -59,49 +67,44 @@ int main(int argc, char* argv[]){
     ls.size = sb.st_size;
     ls.mtime = sb.st_mtime;
     strcpy(ls.name, dir -> d_name);
-    LS_LIST[LS_INDEX] = ls;
-    LS_INDEX++;
+    ls_list[ls_index] = ls;
+    ls_index++;
     if (ls.name[0] != '.'){
       blk_cnt += ((int) ((double) ls.size / 4096.0) * 4);
       if(((int) ls.size % 4096) != 0){ blk_cnt += 4; }
     }
   }
-  qsort(LS_LIST, LS_INDEX, sizeof(struct ls_st), cmpstr);
+  qsort(ls_list, ls_index, sizeof(struct ls_st), cmpstr);
   printf("total %d\n", blk_cnt);
-  for(int i = 0; i < LS_INDEX; i++){
-    if (LS_LIST[i].name[0] == '.'){ continue; }
-    if (S_ISDIR(LS_LIST[i].mode)){
-      strcpy(DIR_LIST[DIR_INDEX++], LS_LIST[i].name);
+  for(int i = 0; i < ls_index; i++){
+    if (ls_list[i].name[0] == '.'){ continue; }
+    if (S_ISDIR(ls_list[i].mode)){
+      strcpy(dir_list[dir_index++], ls_list[i].name);
     }
-    grp = getgrgid(LS_LIST[i].gid);
-    pwd = getpwuid(LS_LIST[i].uid);
-    char* t = ctime(&LS_LIST[i].mtime);
+    grp = getgrgid(ls_list[i].gid);
+    pwd = getpwuid(ls_list[i].uid);
+    char* t = ctime(&ls_list[i].mtime);
     if (t[strlen(t) - 1] == '\n') t[strlen(t) - 1] = '\0';
-    printf((S_ISDIR(LS_LIST[i].mode)) ? "d" : "-");
-    printf((LS_LIST[i].mode & S_IRUSR) ? "r" : "-");
-    printf((LS_LIST[i].mode & S_IWUSR) ? "w" : "-");
-    printf((LS_LIST[i].mode & S_IXUSR) ? "x" : "-");
-    printf((LS_LIST[i].mode & S_IRGRP) ? "r" : "-");
-    printf((LS_LIST[i].mode & S_IWGRP) ? "w" : "-");
-    printf((LS_LIST[i].mode & S_IXGRP) ? "x" : "-");
-    printf((LS_LIST[i].mode & S_IROTH) ? "r" : "-");
-    printf((LS_LIST[i].mode & S_IWOTH) ? "w" : "-");
-    printf((LS_LIST[i].mode & S_IXOTH) ? "x" : "-");
+    printf((S_ISDIR(ls_list[i].mode)) ? "d" : "-");
+    printf((ls_list[i].mode & S_IRUSR) ? "r" : "-");
+    printf((ls_list[i].mode & S_IWUSR) ? "w" : "-");
+    printf((ls_list[i].mode & S_IXUSR) ? "x" : "-");
+    printf((ls_list[i].mode & S_IRGRP) ? "r" : "-");
+    printf((ls_list[i].mode & S_IWGRP) ? "w" : "-");
+    printf((ls_list[i].mode & S_IXGRP) ? "x" : "-");
+    printf((ls_list[i].mode & S_IROTH) ? "r" : "-");
+    printf((ls_list[i].mode & S_IWOTH) ? "w" : "-");
+    printf((ls_list[i].mode & S_IXOTH) ? "x" : "-");
     printf("\t");
     printf("%ld\t%s\t%s\t%lld\t%s\t%s\n",
-          (long) LS_LIST[i].nlink,
+          (long) ls_list[i].nlink,
           pwd -> pw_name,
           grp -> gr_name,
-          (long long) LS_LIST[i].size,
+          (long long) ls_list[i].size,
           t,
-          LS_LIST[i].name);
+          ls_list[i].name);
   }
-  for(int i = 0; i < DIR_INDEX; i++){
-    printf("%s\n", DIR_LIST[i]);
-  }
-  return 0;
 }
-
 
 int cmpstr(const void* a, const void* b){
   const struct ls_st *ls_a = a;
