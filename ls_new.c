@@ -106,7 +106,7 @@ void ls_recursive(char* path){
   }
   if(dir_index != 0){
     for(int i = 0; i < dir_index; i++){
-      char* recursive_path;
+      char* recursive_path = malloc(strlen(path) + strlen(dir_list[i]) + 2);
       strcpy(recursive_path, path);
       strcat(recursive_path, "/");
       strcat(recursive_path, dir_list[i]);
