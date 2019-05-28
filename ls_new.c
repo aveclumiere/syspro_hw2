@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+// struct for file info
 struct ls_st {
   mode_t          mode;
   nlink_t         nlink;
@@ -19,8 +19,9 @@ struct ls_st {
   char            name[250];
 };
 
-
+// function for ls recursively
 void ls_recursive(char* path);
+// function for comparing string in struct
 int cmpstr(const void* a, const void* b);
 
 int main(int argc, char* argv[]){
@@ -37,12 +38,15 @@ void ls_recursive(char* path){
   struct group* grp;
   struct passwd* pwd;
 
+  // all files in directory will be stored here for sorting and printing
   struct ls_st ls_list[2000];
   int ls_index = 0;
 
+  // if directories exist, they will be stored here for recursive ls
   char dir_list[2000][250];
   int dir_index = 0;
 
+  // block count
   int blk_cnt = 0;
 
   if((dp = opendir(path)) == NULL){
@@ -81,10 +85,13 @@ void ls_recursive(char* path){
     }
   }
 
+  // sorting files and directories alphabetically
   qsort(ls_list, ls_index, sizeof(struct ls_st), cmpstr);
 
   printf("%s:\n", path);
   printf("total %d\n", blk_cnt);
+
+  // print files and directories
   int i;
   for(i = 0; i < ls_index; i++){
     if (ls_list[i].name[0] == '.'){ continue; }
@@ -93,10 +100,12 @@ void ls_recursive(char* path){
     grp = getgrgid(ls_list[i].gid);
     pwd = getpwuid(ls_list[i].uid);
 
+    // time formatting
     struct tm* t = localtime(&ls_list[i].mtime);
     char m_time[100];
     strftime(m_time, 100, "%b %d %H:%M", t);
 
+    // permission
     printf((S_ISDIR(ls_list[i].mode)) ? "d" : "-");
     printf((ls_list[i].mode & S_IRUSR) ? "r" : "-");
     printf((ls_list[i].mode & S_IWUSR) ? "w" : "-");
@@ -109,6 +118,7 @@ void ls_recursive(char* path){
     printf((ls_list[i].mode & S_IXOTH) ? "x" : "-");
     printf(" ");
 
+    // else printing
     printf("%ld\t%s\t%s\t%lld\t%s %s\n",
           (long) ls_list[i].nlink,
           pwd -> pw_name,
@@ -119,6 +129,7 @@ void ls_recursive(char* path){
   }
   printf("\n");
 
+  // if directories exist, then do recursive ls
   if(dir_index != 0){
     int i;
     for(i = 0; i < dir_index; i++){
